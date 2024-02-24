@@ -28,7 +28,7 @@ public class IndexModel : PageModel
 
         string textKey = "TEXT-" + id;
         //TODO: сохранить в БД text по ключу textKey [+]
-        _redisStorage.Store(textKey, text);
+        
         
         string rankKey = "RANK-" + id;
         //TODO: посчитать rank и сохранить в БД по ключу rankKey [+] 
@@ -37,16 +37,18 @@ public class IndexModel : PageModel
         string similarityKey = "SIMILARITY-" + id;
         //TODO: посчитать similarity и сохранить в БД по ключу similarityKey [+]
         _redisStorage.Store(similarityKey, GetSimilarity(text, id).ToString());
-        
+        _redisStorage.Store(textKey, text);
         return Redirect($"summary?id={id}");
     }
-    
+
     private int GetSimilarity(string text, string id)
     {
         var keys = _redisStorage.GetKeys();
-        
-        return keys.Any(item => 
-            item.Substring(0, 5) == "TEXT-" && _redisStorage.Load(item) == text) ? 1 : 0;
+
+        return keys.Any(item =>
+            item.Substring(0, 5) == "TEXT-" && _redisStorage.Load(item) == text)
+            ? 1
+            : 0;
     }
 
     private static double GetRank(string text)
