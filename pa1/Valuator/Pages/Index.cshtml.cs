@@ -55,6 +55,6 @@ public class IndexModel : PageModel
     {
         var notLetterCount = text.Count(ch => !char.IsLetter(ch));
 
-        return 1.0 - (double) notLetterCount / text.Length;
+        return (double) notLetterCount / text.Length;
     }
 }
