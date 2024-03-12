@@ -26,6 +26,11 @@ public class IndexModel : PageModel
 
         string id = Guid.NewGuid().ToString();
 
+        if (string.IsNullOrEmpty(text))
+        {
+            return Redirect($"index");
+        }
+        
         string textKey = "TEXT-" + id;
         //TODO: сохранить в БД text по ключу textKey [+]
         
